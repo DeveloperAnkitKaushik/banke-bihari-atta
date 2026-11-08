@@ -1,15 +1,13 @@
 import { getApps, initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
+// Firebase web config is public by design; firestore.rules is what protects the data.
 const config = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: "AIzaSyAlItm4VnUmJYMegQzuwGcjnw5CLeM0Gk0",
+  authDomain: "atta-project-7d7aa.firebaseapp.com",
+  projectId: "atta-project-7d7aa",
+  appId: "1:1061381689246:web:1339743e6183c921e0d08f",
 };
 
-/** Without env vars the site runs on seed data and the admin runs in browser-only demo mode. */
-export const isFirebaseConfigured = Boolean(config.apiKey && config.projectId);
-
-export const app = isFirebaseConfigured ? (getApps()[0] ?? initializeApp(config)) : null;
-export const db = app ? getFirestore(app) : null;
+export const app = getApps()[0] ?? initializeApp(config);
+export const db = getFirestore(app);

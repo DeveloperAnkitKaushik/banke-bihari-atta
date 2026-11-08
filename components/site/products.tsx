@@ -1,11 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion, useMotionValue, useSpring, useTransform } from "motion/react";
-import { Search, Star } from "lucide-react";
+import { Images, Search, Star } from "lucide-react";
 import { memo, useDeferredValue, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { CATEGORIES, categoryOf, type Product } from "@/lib/types";
-import { ProductVisual } from "./art";
+import { Pack } from "./art";
 import { ProductDialog } from "./product-dialog";
 
 const Card = memo(function Card({ product, onOpen }: { product: Product; onOpen: (p: Product) => void }) {
@@ -14,6 +14,7 @@ const Card = memo(function Card({ product, onOpen }: { product: Product; onOpen:
   const rotateY = useSpring(useTransform(mx, [-0.5, 0.5], [-14, 14]), { stiffness: 200, damping: 20 });
   const rotateX = useSpring(useTransform(my, [-0.5, 0.5], [12, -12]), { stiffness: 200, damping: 20 });
   const cat = categoryOf(product.category);
+  const [cover, second] = product.photos;
 
   return (
     <motion.li
@@ -37,15 +38,33 @@ const Card = memo(function Card({ product, onOpen }: { product: Product; onOpen:
         }}
         className="group relative flex h-full w-full flex-col overflow-hidden rounded-3xl border border-border bg-card text-left shadow-sm transition-all duration-500 hover:-translate-y-1.5 hover:shadow-2xl hover:shadow-maroon/10 focus-visible:ring-4 focus-visible:ring-gold/40 focus-visible:outline-none"
       >
-        <div className="relative grid aspect-[4/4.2] place-items-center overflow-hidden [perspective:800px]" style={{ background: `radial-gradient(circle at 50% 60%, ${cat.grain}55, transparent 70%)` }}>
-          <div className="ornament absolute inset-0 opacity-60" />
-          <motion.div
-            className="absolute size-[70%] rounded-full opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-60"
-            style={{ background: cat.grain }}
-          />
-          <motion.div style={{ rotateX, rotateY }} className="relative h-[82%] transition-transform duration-500 group-hover:scale-105">
-            <ProductVisual product={product} className="h-full w-auto drop-shadow-[0_18px_18px_rgba(43,26,18,0.25)]" />
-          </motion.div>
+        <div className="relative aspect-square overflow-hidden [perspective:800px]" style={{ background: `radial-gradient(circle at 50% 60%, ${cat.grain}55, transparent 70%)` }}>
+          {cover ? (
+            <>
+              {/* eslint-disable-next-line @next/next/no-img-element -- sources are already resized (Unsplash CDN or webp upload) */}
+              <img src={cover} alt={product.name} loading="lazy" className="absolute inset-0 size-full object-cover transition-transform duration-700 group-hover:scale-110" />
+              {second && (
+                // eslint-disable-next-line @next/next/no-img-element -- same as above
+                <img src={second} alt="" loading="lazy" className="absolute inset-0 size-full object-cover opacity-0 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100" />
+              )}
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/45 via-transparent to-transparent" />
+              <motion.div style={{ rotateX, rotateY }} className="absolute -right-2 -bottom-3 h-[44%] rotate-6 transition-transform duration-500 group-hover:-translate-y-2 group-hover:rotate-0">
+                <Pack product={product} className="h-full w-auto drop-shadow-[0_12px_14px_rgba(0,0,0,0.35)]" />
+              </motion.div>
+              {product.photos.length > 1 && (
+                <span className="absolute bottom-3 left-3 flex items-center gap-1 rounded-full bg-ink/60 px-2 py-0.5 text-xs text-cream backdrop-blur">
+                  <Images className="size-3.5" /> {product.photos.length}
+                </span>
+              )}
+            </>
+          ) : (
+            <div className="grid size-full place-items-center">
+              <div className="ornament absolute inset-0 opacity-60" />
+              <motion.div style={{ rotateX, rotateY }} className="relative h-[82%] transition-transform duration-500 group-hover:scale-105">
+                <Pack product={product} className="h-full w-auto drop-shadow-[0_18px_18px_rgba(43,26,18,0.25)]" />
+              </motion.div>
+            </div>
+          )}
           {product.badge && (
             <span className="absolute top-3 left-3 rounded-full bg-maroon px-3 py-1 text-xs font-semibold text-cream shadow">{product.badge}</span>
           )}
@@ -90,8 +109,7 @@ export function Products({ products, whatsapp, phone }: { products: Product[]; w
   const tabs = [{ id: "all", hi: "सभी", en: "All" }, ...CATEGORIES.filter((c) => products.some((p) => p.category === c.id))];
 
   return (
-    <section id="products" className="relative scroll-mt-20 bg-parchment/60 py-24 md:py-32">
-      <div className="absolute inset-x-0 top-0 h-24 bg-gradient-to-b from-background to-transparent" />
+    <section id="products" className="relative scroll-mt-20 bg-parchment/60 pt-36 pb-24 md:pt-44 md:pb-32">
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 30 }}

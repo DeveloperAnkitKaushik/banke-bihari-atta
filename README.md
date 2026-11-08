@@ -13,25 +13,18 @@ npm run dev
 
 Open http://localhost:3000 for the site and http://localhost:3000/admin for the admin.
 
-With no `.env.local`, the site shows the sample catalogue and the admin runs in **demo mode**: changes are saved in your browser only. That's enough to try everything out.
+## Firebase
 
-## Go live with Firebase (free)
+The site uses the Firebase project `atta-project-7d7aa`. Its web config is in `lib/firebase.ts`. That config is public by design, and `firestore.rules` is what protects the data.
 
-1. Go to https://console.firebase.google.com and create a project. Google Analytics isn't needed.
-2. **Firestore**: Build → Firestore Database → Create database (production mode, any region near India, e.g. `asia-south1`).
-3. **Rules**: Firestore → Rules. Paste `firestore.rules` from this repo, replace `owner@example.com` with the owner's email, and Publish.
-4. **Login**: Build → Authentication → Get started → enable **Email/Password**. On the Users tab, add the owner's account with the same email as in the rules.
-5. **Web config**: Project settings → General → Your apps → Add app → Web. Copy the values into `.env.local` using the names in `.env.example`.
-6. Run `npm run dev`, open `/admin`, sign in, and click **Load sample products**, or add your own.
-
-Firebase Storage is not used because new Storage buckets need the paid Blaze plan. Uploaded photos are shrunk to WebP in the browser and stored in Firestore (`images/{productId}`), then served through `/api/img/[id]`.
+- **Login:** Authentication → Users. Only emails listed in `firestore.rules` can edit.
+- **Rules:** after changing `firestore.rules`, paste it into Firestore → Rules and click Publish.
+- **Photos:** Firebase Storage needs the paid Blaze plan, so it isn't used. Uploaded photos are shrunk to WebP in the browser and stored in Firestore (`images/{productId}`), then served through `/api/img/[id]`.
 
 ## Deploy on Vercel (free)
 
-1. Push this folder to a GitHub repo.
-2. On https://vercel.com, import the repo.
-3. Add the four `NEXT_PUBLIC_FIREBASE_*` variables under Settings → Environment Variables, then deploy.
-4. In Firebase → Authentication → Settings → Authorized domains, add the Vercel domain.
+1. Push this folder to a GitHub repo and import it on https://vercel.com. No environment variables are needed.
+2. In Firebase → Authentication → Settings → Authorized domains, add the Vercel domain (for example `your-app.vercel.app`) so the admin login works there.
 
 Changes made in the admin appear on the live site within about a minute, because the catalogue is cached for 60 seconds.
 
@@ -42,7 +35,7 @@ Changes made in the admin appear on the live site within about a minute, because
 | `app/page.tsx` | Home page: hero, marquee, products, stats, process, visit |
 | `components/site/` | Public site sections and the SVG pack art |
 | `app/admin/`, `components/admin/` | Admin: login, product list, product form, shop details |
-| `components/admin/store.ts` | Every admin read and write (Firestore, or localStorage in demo mode) |
+| `components/admin/store.ts` | Every admin read and write to Firebase |
 | `lib/seed.ts` | Sample products and default shop details |
 | `lib/types.ts` | Product and settings types, plus the category list and colours |
 | `firestore.rules` | Security rules: anyone can read, only the owner's email can write |

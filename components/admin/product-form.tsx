@@ -1,9 +1,9 @@
 "use client";
 
-import { ImagePlus, Loader2, Trash2 } from "lucide-react";
+import { ImagePlus, Loader2, Star, X } from "lucide-react";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
-import { ProductVisual } from "@/components/site/art";
+import { Pack } from "@/components/site/art";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
@@ -26,33 +26,44 @@ export function emptyProduct(order: number): Product {
     featured: false,
     visible: true,
     order,
-    imageVersion: 0,
+    photos: [],
   };
 }
+
+const MAX_PHOTOS = 8;
 
 const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "item";
 
 export function ProductForm({ initial, onClose, onSaved }: { initial: Product; onClose: () => void; onSaved: () => void }) {
   const [p, setP] = useState(initial);
   const [sizes, setSizes] = useState(initial.sizes.join(", "));
-  // undefined = unchanged, null = removed, string = new upload
-  const [photo, setPhoto] = useState<string | null | undefined>(undefined);
+  // stored photos dropped in this edit; their image docs are deleted on save
+  const [removed, setRemoved] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const set = <K extends keyof Product>(k: K, v: Product[K]) => setP((prev) => ({ ...prev, [k]: v }));
   const isNew = !initial.id;
   const preview: Product = {
     ...p,
     sizes: sizes.split(",").map((s) => s.trim()).filter(Boolean),
-    image: photo === undefined ? p.image : (photo ?? undefined),
   };
 
-  async function onPick(file: File | undefined) {
-    if (!file) return;
-    try {
-      setPhoto(await photoToDataUrl(file));
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : "Could not read that photo");
+  async function onPick(files: FileList | null) {
+    const room = MAX_PHOTOS - p.photos.length;
+    const picked = [...(files ?? [])].slice(0, room);
+    if (files && files.length > room) toast.warning(`Up to ${MAX_PHOTOS} photos per product`);
+    for (const file of picked) {
+      try {
+        const url = await photoToDataUrl(file);
+        setP((prev) => ({ ...prev, photos: [...prev.photos, url] }));
+      } catch (e) {
+        toast.error(e instanceof Error ? e.message : "Could not read that photo");
+      }
     }
+  }
+
+  function removePhoto(url: string) {
+    set("photos", p.photos.filter((x) => x !== url));
+    if (!url.startsWith("data:")) setRemoved((r) => [...r, url]);
   }
 
   async function onSubmit(e: FormEvent) {
@@ -69,7 +80,7 @@ export function ProductForm({ initial, onClose, onSaved }: { initial: Product; o
     if (clean.sizes.length === 0) return toast.error("Add at least one pack size");
     setBusy(true);
     try {
-      await saveProduct(clean, photo);
+      await saveProduct(clean, removed);
       toast.success(isNew ? "Product added" : "Saved");
       onSaved();
     } catch (err) {
@@ -87,19 +98,37 @@ export function ProductForm({ initial, onClose, onSaved }: { initial: Product; o
           <DialogDescription>Shown on the website within about a minute of saving.</DialogDescription>
         </DialogHeader>
         <form onSubmit={onSubmit} className="grid gap-6 md:grid-cols-[13rem_1fr]">
-          <div className="flex flex-col items-center gap-3">
-            <div className="grid h-60 w-full place-items-center rounded-2xl bg-muted/60 p-3">
-              <ProductVisual product={preview} className="h-full w-auto" />
+          <div className="flex flex-col gap-3">
+            <div className="grid h-44 w-full place-items-center rounded-2xl bg-muted/60 p-3">
+              <Pack product={preview} className="h-full w-auto" />
             </div>
-            <label className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-lg border border-input bg-card text-sm font-medium hover:bg-muted">
-              <ImagePlus className="size-4" /> {preview.image ? "Change photo" : "Upload photo"}
-              <input type="file" accept="image/*" className="sr-only" onChange={(e) => onPick(e.target.files?.[0])} />
-            </label>
-            {preview.image && (
-              <Button type="button" variant="ghost" size="sm" onClick={() => setPhoto(null)}>
-                <Trash2 /> Use pack illustration instead
-              </Button>
-            )}
+            <p className={LABEL}>Photos · first one is the cover</p>
+            <ul className="grid grid-cols-3 gap-2">
+              {p.photos.map((url, i) => (
+                <li key={url} className="group relative aspect-square overflow-hidden rounded-lg border border-border">
+                  {/* eslint-disable-next-line @next/next/no-img-element -- local previews and already-resized photos */}
+                  <img src={url} alt={`Photo ${i + 1}`} className="size-full object-cover" />
+                  <div className="absolute inset-x-0 bottom-0 flex justify-between bg-ink/60 p-0.5">
+                    <button type="button" aria-label="Make cover photo" disabled={i === 0} onClick={() => set("photos", [url, ...p.photos.filter((x) => x !== url)])} className="grid size-7 place-items-center text-cream disabled:text-gold">
+                      <Star className={cn("size-3.5", i === 0 && "fill-current")} />
+                    </button>
+                    <button type="button" aria-label="Remove photo" onClick={() => removePhoto(url)} className="grid size-7 place-items-center text-cream">
+                      <X className="size-3.5" />
+                    </button>
+                  </div>
+                </li>
+              ))}
+              {p.photos.length < MAX_PHOTOS && (
+                <li>
+                  <label className="grid aspect-square cursor-pointer place-items-center rounded-lg border border-dashed border-gold text-muted-foreground hover:bg-muted">
+                    <ImagePlus className="size-5" />
+                    <span className="sr-only">Add photos</span>
+                    <input type="file" accept="image/*" multiple className="sr-only" onChange={(e) => onPick(e.target.files)} />
+                  </label>
+                </li>
+              )}
+            </ul>
+            {p.photos.length === 0 && <p className="text-xs text-muted-foreground">No photos: the site shows the pack above.</p>}
           </div>
 
           <div className="grid gap-4">

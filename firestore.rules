@@ -4,7 +4,7 @@ service cloud.firestore {
     // Put the owner's login email(s) here. Only these accounts can edit.
     function isAdmin() {
       return request.auth != null
-        && request.auth.token.email in ['owner@example.com'];
+        && request.auth.token.email in ['ankitkaushik6269@gmail.com'];
     }
 
     match /products/{id} {

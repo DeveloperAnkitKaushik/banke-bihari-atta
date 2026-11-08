@@ -89,6 +89,29 @@
   }
 }
 
+/* brand scrollbar: maroon-to-gold thumb on a cream track */
+/* Chrome ignores the ::-webkit rules once scrollbar-color is set, so give it to Firefox only */
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-color: var(--color-maroon) var(--color-parchment);
+  }
+}
+::-webkit-scrollbar {
+  width: 12px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-parchment);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--color-gold), var(--color-maroon));
+  border: 3px solid var(--color-parchment);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-maroon);
+}
+
 /* subtle paper grain over the whole page */
 .paper::before {
   content: "";

@@ -10,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ProductList } from "./product-list";
 import { SettingsForm } from "./settings-form";
-import { isDemo, login, logout, watchUser } from "./store";
+import { login, logout, watchUser } from "./store";
 
 function Login() {
   const [busy, setBusy] = useState(false);
@@ -57,11 +57,6 @@ export function AdminApp() {
 
   return (
     <div className="min-h-dvh">
-      {isDemo && (
-        <p className="bg-gold px-4 py-2 text-center text-sm text-maroon-deep">
-          Demo mode: Firebase isn&apos;t connected, so changes are saved in this browser only. See README to go live.
-        </p>
-      )}
       <header className="sticky top-0 z-30 border-b border-border bg-cream/90 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center gap-3 px-4 py-2">
           <Image src="/logo.webp" alt="" width={84} height={56} className="h-12 w-auto" />
@@ -70,11 +65,9 @@ export function AdminApp() {
           <Button variant="outline" size="sm" nativeButton={false} render={<Link href="/" target="_blank" />}>
             <ExternalLink /> Site
           </Button>
-          {!isDemo && (
-            <Button variant="ghost" size="sm" onClick={() => logout()}>
-              <LogOut /> Sign out
-            </Button>
-          )}
+          <Button variant="ghost" size="sm" onClick={() => logout()}>
+            <LogOut /> Sign out
+          </Button>
         </div>
       </header>
       <main className="mx-auto max-w-5xl px-4 py-6">

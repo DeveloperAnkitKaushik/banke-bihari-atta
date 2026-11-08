@@ -61,7 +61,7 @@ export function Hero({ whatsapp, since }: { whatsapp: string; since: string }) {
         mx.set((e.clientX - r.left) / r.width - 0.5);
         my.set((e.clientY - r.top) / r.height - 0.5);
       }}
-      className="relative isolate flex min-h-dvh items-center overflow-hidden pt-28 pb-16"
+      className="relative isolate flex min-h-dvh items-center overflow-hidden pt-28 pb-32"
     >
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_70%_40%,#f6deb0_0%,transparent_55%),radial-gradient(ellipse_at_10%_90%,#e8f0dc_0%,transparent_45%)]" />
       <div className="ornament absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_center,black,transparent_75%)]" />
@@ -83,7 +83,7 @@ export function Hero({ whatsapp, since }: { whatsapp: string; since: string }) {
 
       <motion.div
         aria-hidden
-        className="absolute -bottom-6 left-2 hidden w-14 origin-bottom sm:block"
+        className="absolute bottom-20 left-2 hidden w-14 origin-bottom sm:block"
         animate={{ rotate: [-4, 5, -4] }}
         transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
       >
@@ -91,7 +91,7 @@ export function Hero({ whatsapp, since }: { whatsapp: string; since: string }) {
       </motion.div>
       <motion.div
         aria-hidden
-        className="absolute right-3 -bottom-8 hidden w-16 origin-bottom sm:block"
+        className="absolute right-3 bottom-20 hidden w-16 origin-bottom sm:block"
         animate={{ rotate: [5, -4, 5] }}
         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
       >
@@ -222,7 +222,7 @@ export function Hero({ whatsapp, since }: { whatsapp: string; since: string }) {
       <motion.a
         href="#products"
         aria-label="Scroll to products"
-        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1 text-xs tracking-[0.3em] text-muted-foreground uppercase md:flex"
+        className="absolute bottom-24 left-1/2 hidden -translate-x-1/2 flex-col items-center gap-1 text-xs tracking-[0.3em] text-muted-foreground uppercase md:flex"
         animate={{ y: [0, 8, 0] }}
         transition={{ duration: 2, repeat: Infinity }}
       >

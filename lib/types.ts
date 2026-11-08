@@ -23,10 +23,8 @@ export type Product = {
   featured: boolean;
   visible: boolean;
   order: number;
-  /** bumped on every upload; 0 = no photo, show the pack illustration */
-  imageVersion: number;
-  /** computed on read, never stored */
-  image?: string;
+  /** photo URLs, first is the cover; empty = show the pack illustration */
+  photos: string[];
 };
 
 export type Settings = {
@@ -38,6 +36,3 @@ export type Settings = {
   since: string;
   families: string;
 };
-
-export const imageUrl = (p: Pick<Product, "id" | "imageVersion">) =>
-  p.imageVersion ? `/api/img/${p.id}?v=${p.imageVersion}` : undefined;

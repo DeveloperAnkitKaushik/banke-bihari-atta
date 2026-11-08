@@ -40,7 +40,8 @@ function Row({ items, speed, className }: { items: string[]; speed: number; clas
 
 export function VelocityMarquee() {
   return (
-    <section aria-label="Our promise" className="relative -rotate-2 space-y-2 border-y-4 border-gold bg-maroon py-5 shadow-2xl">
+    // wider than the screen and pulled over both neighbours, so the tilted edges never show a gap
+    <section aria-label="Our promise" className="relative z-10 -my-16 -ml-[5%] w-[110%] -rotate-2 space-y-2 border-y-4 border-gold bg-maroon py-5 shadow-2xl">
       <Row speed={-2} className="font-display text-4xl text-cream sm:text-6xl" items={["शुद्ध", "ताज़ा", "चक्की पिसा", "देसी स्वाद", "घर का भरोसा"]} />
       <Row speed={1.5} className="text-lg font-semibold tracking-[0.3em] text-gold-soft uppercase sm:text-xl" items={["Pure", "Fresh daily", "Stone ground", "No preservatives", "Hand sorted", "Since generations"]} />
     </section>

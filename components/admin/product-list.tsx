@@ -43,8 +43,8 @@ const Row = memo(function Row({ product: p, first, last, onEdit, onDelete, onMov
           <ArrowDown />
         </Button>
       </div>
-      <div className="grid h-16 w-14 shrink-0 place-items-center">
-        <ProductVisual product={p} className="h-full w-auto" />
+      <div className="size-14 shrink-0 overflow-hidden rounded-lg bg-muted">
+        <ProductVisual product={p} className="size-full" />
       </div>
       <div className="min-w-0 flex-1">
         <p className="truncate font-display text-xl text-maroon">{p.nameHi}</p>
@@ -111,7 +111,7 @@ export function ProductList() {
   async function confirmDelete() {
     if (!deleting) return;
     try {
-      await deleteProduct(deleting.id);
+      await deleteProduct(deleting);
       toast.success(`${deleting.name} deleted`);
       setProducts((prev) => prev?.filter((p) => p.id !== deleting.id) ?? prev);
     } catch {

@@ -56,9 +56,9 @@ export function Chakki(props: SVGProps<SVGSVGElement>) {
 }
 
 export function ProductVisual({ product, className }: { product: Product; className?: string }) {
-  return product.image ? (
-    // eslint-disable-next-line @next/next/no-img-element -- already resized to webp on upload, served from our own route
-    <img src={product.image} alt={product.name} className={`object-contain ${className ?? ""}`} loading="lazy" />
+  return product.photos[0] ? (
+    // eslint-disable-next-line @next/next/no-img-element -- sources are already resized (Unsplash CDN or webp upload)
+    <img src={product.photos[0]} alt={product.name} className={`object-cover ${className ?? ""}`} loading="lazy" />
   ) : (
     <Pack product={product} className={className} />
   );
