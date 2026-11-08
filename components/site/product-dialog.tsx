@@ -1,13 +1,13 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { ChevronLeft, ChevronRight, MessageCircle, Phone, X } from "lucide-react";
+import { ChevronLeft, ChevronRight, Phone, X } from "lucide-react";
 import { useState } from "react";
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { categoryOf, type Product } from "@/lib/types";
 import { telLink, waLink } from "@/lib/wa";
-import { Pack } from "./art";
+import { Pack, WhatsAppIcon } from "./art";
 
 const PACK = "pack";
 
@@ -128,7 +128,7 @@ export function ProductDialog({ product, onClose, whatsapp, phone }: { product: 
                   rel="noreferrer"
                   className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-leaf font-semibold text-cream transition hover:bg-leaf-deep"
                 >
-                  <MessageCircle className="size-4" /> WhatsApp पूछें
+                  <WhatsAppIcon className="size-4" /> WhatsApp पूछें
                 </a>
                 <a href={telLink(phone)} className="inline-flex min-h-12 min-w-12 items-center justify-center gap-2 rounded-full border-2 border-maroon font-semibold text-maroon transition hover:bg-maroon hover:text-cream">
                   <Phone className="size-4" /> <span className="max-sm:sr-only">Call us</span>

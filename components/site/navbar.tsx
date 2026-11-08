@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { motion, useMotionValueEvent, useScroll } from "motion/react";
-import { MessageCircle } from "lucide-react";
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { WhatsAppIcon } from "./art";
 import { waLink } from "@/lib/wa";
 
 const LINKS = [
@@ -51,7 +51,7 @@ export function Navbar({ whatsapp }: { whatsapp: string }) {
           rel="noreferrer"
           className="inline-flex min-h-11 items-center gap-2 rounded-full bg-leaf px-4 text-sm font-semibold text-cream shadow-md shadow-leaf/30 transition hover:-translate-y-0.5 hover:bg-leaf-deep"
         >
-          <MessageCircle className="size-4" />
+          <WhatsAppIcon className="size-4" />
           <span className="hidden sm:inline">WhatsApp करें</span>
           <span className="sm:hidden">Order</span>
         </a>

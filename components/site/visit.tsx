@@ -1,7 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Clock, MapPin, MessageCircle, Navigation, Phone } from "lucide-react";
+import { Clock, MapPin, Navigation, Phone } from "lucide-react";
 import type { Settings } from "@/lib/types";
+import { WhatsAppIcon } from "./art";
 import { telLink, waLink } from "@/lib/wa";
 import { Reveal } from "./reveal";
 
@@ -56,7 +57,7 @@ export function Visit({ settings }: { settings: Settings }) {
                 rel="noreferrer"
                 className="inline-flex min-h-12 items-center gap-2 rounded-full bg-gold px-6 font-semibold text-maroon-deep shadow-lg transition hover:-translate-y-0.5 hover:bg-gold-soft"
               >
-                <MessageCircle className="size-4" /> WhatsApp करें
+                <WhatsAppIcon className="size-4" /> WhatsApp करें
               </a>
               <a
                 href={`https://www.google.com/maps/dir/?api=1&destination=${place}`}

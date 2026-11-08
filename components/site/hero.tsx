@@ -2,10 +2,10 @@
 
 import Image from "next/image";
 import { motion, useMotionValue, useScroll, useSpring, useTransform, type MotionValue } from "motion/react";
-import { ArrowDown, MessageCircle, Sparkles } from "lucide-react";
+import { ArrowDown, Sparkles } from "lucide-react";
 import { useRef } from "react";
 import { waLink } from "@/lib/wa";
-import { Grain, WheatStalk } from "./art";
+import { Grain, WheatStalk, WhatsAppIcon } from "./art";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -161,7 +161,7 @@ export function Hero({ whatsapp, since }: { whatsapp: string; since: string }) {
               rel="noreferrer"
               className="inline-flex min-h-12 items-center gap-2 rounded-full border-2 border-leaf px-7 font-semibold text-leaf transition hover:bg-leaf hover:text-cream"
             >
-              <MessageCircle className="size-4" /> Ask on WhatsApp
+              <WhatsAppIcon className="size-4" /> Ask on WhatsApp
             </a>
           </motion.div>
           <motion.ul

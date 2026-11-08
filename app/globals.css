@@ -42,6 +42,7 @@
   --color-cream: #fbf5e6;
   --color-parchment: #f4e9cf;
   --color-ink: #2b1a12;
+  --color-whatsapp: #25d366;
 
   --animate-marquee: marquee var(--marquee-duration, 30s) linear infinite;
   --animate-spin-slow: spin 40s linear infinite;

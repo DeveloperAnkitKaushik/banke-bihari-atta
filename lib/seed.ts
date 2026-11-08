@@ -54,7 +54,7 @@ export const SEED_PRODUCTS: Product[] = rows.map(([id, name, nameHi, category, c
 }));
 
 export const SEED_SETTINGS: Settings = {
-  phone: "+91 98701 75607",
+  phone: "098701 75607",
   whatsapp: "919870175607",
   address: "A-7, Devli Rd, Pocket B, Raju Park, Khanpur, New Delhi 110080",
   hours: "Mon–Sun · 10:30 AM – 10:30 PM",

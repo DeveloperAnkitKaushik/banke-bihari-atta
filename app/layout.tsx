@@ -21,7 +21,7 @@ export const viewport: Viewport = { themeColor: "#6e1518" };
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="hi" className={`${display.variable} ${body.variable} antialiased`}>
-      <body className="paper min-h-dvh">
+      <body className="paper min-h-dvh overflow-x-clip">
         <MotionConfig reducedMotion="user">{children}</MotionConfig>
         <Toaster theme="light" position="top-center" richColors />
       </body>

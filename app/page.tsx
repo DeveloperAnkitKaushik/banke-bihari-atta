@@ -1,4 +1,4 @@
-import { MessageCircle } from "lucide-react";
+import { WhatsAppIcon } from "@/components/site/art";
 import { Hero } from "@/components/site/hero";
 import { Navbar } from "@/components/site/navbar";
 import { Process } from "@/components/site/process";
@@ -28,10 +28,10 @@ export default async function Home() {
         target="_blank"
         rel="noreferrer"
         aria-label="Chat on WhatsApp"
-        className="fixed right-4 bottom-4 z-40 grid size-14 place-items-center rounded-full bg-leaf text-cream shadow-xl shadow-leaf/40 transition hover:scale-110 sm:right-6 sm:bottom-6"
+        className="fixed right-4 bottom-4 z-40 grid size-14 place-items-center rounded-full bg-whatsapp text-white shadow-xl shadow-whatsapp/40 transition hover:scale-110 sm:right-6 sm:bottom-6"
       >
-        <span className="absolute inset-0 animate-ping rounded-full bg-leaf/40 motion-reduce:hidden" />
-        <MessageCircle className="relative size-6" />
+        <span className="absolute inset-0 animate-ping rounded-full bg-whatsapp/40 motion-reduce:hidden" />
+        <WhatsAppIcon className="relative size-6" />
       </a>
     </>
   );
