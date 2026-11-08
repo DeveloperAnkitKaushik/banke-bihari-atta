@@ -25,9 +25,9 @@ export function WhatsAppFab({ whatsapp }: { whatsapp: string }) {
           whileHover={{ scale: 1.1 }}
           whileTap={{ scale: 0.92 }}
           transition={{ type: "spring", bounce: 0.45, duration: 0.6 }}
-          className="group fixed right-4 bottom-4 z-40 grid size-14 place-items-center rounded-full bg-whatsapp text-white shadow-xl shadow-black/25 sm:right-6 sm:bottom-6"
+          className="group fixed right-4 bottom-4 z-40 grid size-14 place-items-center rounded-full bg-whatsapp text-white shadow-lg shadow-whatsapp/40 ring-4 ring-white/70 sm:right-6 sm:bottom-6"
         >
-          <span className="absolute inset-0 animate-ping rounded-full bg-whatsapp/40 motion-reduce:hidden" />
+          <span className="absolute inset-0 animate-ping rounded-full bg-whatsapp/30 [animation-duration:2.2s] motion-reduce:hidden" />
           <WhatsAppIcon className="relative size-7" />
           <span className="pointer-events-none absolute right-full mr-3 hidden rounded-full bg-ink px-3 py-1.5 text-sm whitespace-nowrap text-cream opacity-0 shadow-lg transition group-hover:opacity-100 sm:block">
             Order on WhatsApp
