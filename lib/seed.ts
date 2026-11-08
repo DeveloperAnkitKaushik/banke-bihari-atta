@@ -54,11 +54,11 @@ export const SEED_PRODUCTS: Product[] = rows.map(([id, name, nameHi, category, c
 }));
 
 export const SEED_SETTINGS: Settings = {
-  phone: "+91 98765 43210",
-  whatsapp: "919876543210",
-  address: "Main Bazaar, Vrindavan, Uttar Pradesh",
-  hours: "Mon–Sun · 7:00 AM – 9:00 PM",
-  mapQuery: "Shri Banke Bihari Mandir, Vrindavan, Uttar Pradesh",
+  phone: "+91 98701 75607",
+  whatsapp: "919870175607",
+  address: "A-7, Devli Rd, Pocket B, Raju Park, Khanpur, New Delhi 110080",
+  hours: "Mon–Sun · 10:30 AM – 10:30 PM",
+  mapQuery: "Bankey Bihari Atta chakki, A-7, Devli Rd, Khanpur, New Delhi 110080",
   since: "1998",
   families: "5000",
 };
