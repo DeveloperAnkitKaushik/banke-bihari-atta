@@ -1,9 +1,9 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { ChevronLeft, ChevronRight, MessageCircle, Phone } from "lucide-react";
+import { ChevronLeft, ChevronRight, MessageCircle, Phone, X } from "lucide-react";
 import { useState } from "react";
-import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { cn } from "@/lib/utils";
 import { categoryOf, type Product } from "@/lib/types";
 import { telLink, waLink } from "@/lib/wa";
@@ -19,8 +19,8 @@ function Gallery({ product }: { product: Product }) {
   const cat = categoryOf(product.category);
 
   return (
-    <div className="flex flex-col gap-3 p-4 sm:p-6">
-      <div className="relative aspect-square overflow-hidden rounded-2xl" style={{ background: `radial-gradient(circle, ${cat.grain}66, transparent 70%)` }}>
+    <div className="flex flex-col gap-3 p-3 pt-6 sm:p-6">
+      <div className="relative aspect-[1/0.9] overflow-hidden rounded-2xl sm:aspect-square" style={{ background: `radial-gradient(circle, ${cat.grain}66, transparent 70%)` }}>
         <AnimatePresence initial={false} custom={dir} mode="popLayout">
           <motion.div
             key={index}
@@ -89,11 +89,21 @@ export function ProductDialog({ product, onClose, whatsapp, phone }: { product: 
   const cat = product && categoryOf(product.category);
   return (
     <Dialog open={!!product} onOpenChange={(o) => !o && onClose()}>
-      <DialogContent className="max-h-[94dvh] overflow-y-auto border-gold/40 bg-cream p-0 sm:max-w-4xl">
+      <DialogContent
+        showCloseButton={false}
+        className="max-h-[92dvh] gap-0 overflow-y-auto overscroll-contain border-gold/40 bg-cream p-0 max-sm:top-auto max-sm:bottom-0 max-sm:max-w-full max-sm:translate-y-0 max-sm:rounded-t-[1.75rem] max-sm:rounded-b-none max-sm:data-open:slide-in-from-bottom-1/2 sm:max-w-4xl"
+      >
+        <span aria-hidden className="absolute top-2 left-1/2 h-1.5 w-12 -translate-x-1/2 rounded-full bg-ink/20 sm:hidden" />
+        <DialogClose
+          aria-label="Close"
+          className="absolute top-4 right-4 z-10 grid size-11 place-items-center rounded-full bg-cream/90 text-maroon shadow-lg backdrop-blur transition hover:bg-cream sm:top-3 sm:right-3"
+        >
+          <X className="size-5" />
+        </DialogClose>
         {product && cat && (
           <div className="grid md:grid-cols-[1.1fr_1fr]">
             <Gallery key={product.id} product={product} />
-            <div className="flex flex-col gap-3 p-6 pt-2 sm:p-8 md:pt-8">
+            <div className="flex flex-col gap-3 px-5 pt-1 sm:p-8 md:pt-14">
               <span className="text-xs font-semibold tracking-[0.25em] uppercase" style={{ color: cat.color }}>
                 {cat.hi} · {cat.en}
               </span>
@@ -111,7 +121,7 @@ export function ProductDialog({ product, onClose, whatsapp, phone }: { product: 
                   ))}
                 </div>
               </div>
-              <div className="mt-auto grid gap-2 pt-4 sm:grid-cols-2">
+              <div className="sticky bottom-0 -mx-5 mt-auto grid grid-cols-[1fr_auto] gap-2 border-t border-border bg-cream/95 px-5 py-3 backdrop-blur sm:static sm:mx-0 sm:grid-cols-2 sm:border-0 sm:bg-transparent sm:px-0 sm:pt-4 sm:pb-0">
                 <a
                   href={waLink(whatsapp, `Namaste! I'd like to know the rate and availability of ${product.name} (${product.nameHi}).`)}
                   target="_blank"
@@ -120,8 +130,8 @@ export function ProductDialog({ product, onClose, whatsapp, phone }: { product: 
                 >
                   <MessageCircle className="size-4" /> WhatsApp पूछें
                 </a>
-                <a href={telLink(phone)} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border-2 border-maroon font-semibold text-maroon transition hover:bg-maroon hover:text-cream">
-                  <Phone className="size-4" /> Call us
+                <a href={telLink(phone)} className="inline-flex min-h-12 min-w-12 items-center justify-center gap-2 rounded-full border-2 border-maroon font-semibold text-maroon transition hover:bg-maroon hover:text-cream">
+                  <Phone className="size-4" /> <span className="max-sm:sr-only">Call us</span>
                 </a>
               </div>
             </div>
