@@ -19,6 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { categoryOf, type Product } from "@/lib/types";
 import { emptyProduct, ProductForm } from "./product-form";
+import { LoadError, RowsSkeleton } from "./states";
 import { deleteProduct, listProducts, loadSampleCatalog, saveOrder, saveProduct } from "./store";
 
 type RowProps = {
@@ -80,10 +81,11 @@ export function ProductList() {
   const [deleting, setDeleting] = useState<Product | null>(null);
   const [query, setQuery] = useState("");
 
+  const [failed, setFailed] = useState(false);
   const reload = useCallback(() => {
     listProducts()
       .then(setProducts)
-      .catch((e: unknown) => toast.error(e instanceof Error ? e.message : "Could not load products"));
+      .catch(() => setFailed(true));
   }, []);
   useEffect(reload, [reload]);
 
@@ -120,7 +122,17 @@ export function ProductList() {
     setDeleting(null);
   }
 
-  if (!products) return <p className="py-20 text-center text-muted-foreground">Loading…</p>;
+  if (failed && !products)
+    return (
+      <LoadError
+        what="products"
+        onRetry={() => {
+          setFailed(false);
+          reload();
+        }}
+      />
+    );
+  if (!products) return <RowsSkeleton />;
 
   const q = query.trim().toLowerCase();
   const shown = q ? products.filter((p) => `${p.name} ${p.nameHi}`.toLowerCase().includes(q)) : products;

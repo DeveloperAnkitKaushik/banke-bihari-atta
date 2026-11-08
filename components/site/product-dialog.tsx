@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils";
 import { categoryOf, type Product } from "@/lib/types";
 import { telLink, waLink } from "@/lib/wa";
 import { Pack, WhatsAppIcon } from "./art";
+import { Photo } from "./photo";
 
 const PACK = "pack";
 
@@ -45,8 +46,7 @@ function Gallery({ product }: { product: Product }) {
             {slides[index] === PACK ? (
               <Pack product={product} className="ornament h-[85%] w-auto drop-shadow-2xl" />
             ) : (
-              // eslint-disable-next-line @next/next/no-img-element -- sources are already resized (Unsplash CDN or webp upload)
-              <img src={slides[index]} alt={product.name} draggable={false} className="size-full object-cover" />
+              <Photo src={slides[index]} alt={product.name} eager fallback={<Pack product={product} className="ornament h-[85%] w-auto drop-shadow-2xl" />} />
             )}
           </motion.div>
         </AnimatePresence>

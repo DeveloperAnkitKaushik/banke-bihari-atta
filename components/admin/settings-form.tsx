@@ -6,6 +6,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import type { Settings } from "@/lib/types";
+import { LoadError, RowsSkeleton } from "./states";
 import { getSettings, saveSettings } from "./store";
 
 const FIELDS: { key: keyof Settings; label: string; hint?: string }[] = [
@@ -20,14 +21,27 @@ const FIELDS: { key: keyof Settings; label: string; hint?: string }[] = [
 
 export function SettingsForm() {
   const [s, setS] = useState<Settings | null>(null);
-  const [busy, setBusy] = useState(false);
-  useEffect(() => {
+  const [failed, setFailed] = useState(false);
+  const load = () =>
     getSettings()
       .then(setS)
-      .catch(() => toast.error("Could not load settings"));
+      .catch(() => setFailed(true));
+  const [busy, setBusy] = useState(false);
+  useEffect(() => {
+    load();
   }, []);
 
-  if (!s) return <p className="py-20 text-center text-muted-foreground">Loading…</p>;
+  if (failed && !s)
+    return (
+      <LoadError
+        what="shop details"
+        onRetry={() => {
+          setFailed(false);
+          load();
+        }}
+      />
+    );
+  if (!s) return <RowsSkeleton rows={4} />;
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();

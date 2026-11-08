@@ -1,5 +1,4 @@
 import Image from "next/image";
-import Link from "next/link";
 import { Clock, MapPin, Navigation, Phone } from "lucide-react";
 import type { Settings } from "@/lib/types";
 import { WhatsAppIcon } from "./art";
@@ -90,22 +89,5 @@ export function Visit({ settings }: { settings: Settings }) {
         </div>
       </Reveal>
     </section>
-  );
-}
-
-export function Footer({ year }: { year: number }) {
-  return (
-    <footer className="border-t border-border bg-parchment/60">
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-4 px-4 py-10 text-center sm:px-6">
-        <Image src="/logo.webp" alt="Banke Bihari Atta Chakki" width={180} height={120} className="h-24 w-auto" />
-        <p className="font-display text-2xl text-maroon">घर की रसोई का पूरा भरोसा</p>
-        <p className="text-sm text-muted-foreground">
-          © {year} Banke Bihari Atta Chakki ·{" "}
-          <Link href="/admin" className="underline-offset-4 hover:underline">
-            Admin
-          </Link>
-        </p>
-      </div>
-    </footer>
   );
 }

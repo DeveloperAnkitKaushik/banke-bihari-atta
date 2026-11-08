@@ -8,6 +8,7 @@ import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ChakkiLoader } from "@/components/site/loader";
 import { ProductList } from "./product-list";
 import { SettingsForm } from "./settings-form";
 import { ADMIN_EMAILS, login, loginWithGoogle, logout, watchUser } from "./store";
@@ -79,7 +80,12 @@ export function AdminApp() {
   const [email, setEmail] = useState<string | null | undefined>(undefined);
   useEffect(() => watchUser(setEmail), []);
 
-  if (email === undefined) return <p className="grid min-h-dvh place-items-center text-muted-foreground">Loading…</p>;
+  if (email === undefined)
+    return (
+      <main className="grid min-h-dvh place-items-center">
+        <ChakkiLoader label="Checking login…" />
+      </main>
+    );
   if (email === null) return <Login />;
   if (!ADMIN_EMAILS.includes(email.toLowerCase()))
     return (

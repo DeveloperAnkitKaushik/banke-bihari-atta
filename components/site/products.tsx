@@ -5,7 +5,8 @@ import { ArrowUpRight, Search } from "lucide-react";
 import { memo, useDeferredValue, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 import { CATEGORIES, categoryOf, type Product } from "@/lib/types";
-import { Pack } from "./art";
+import { Grain, Pack } from "./art";
+import { Photo } from "./photo";
 import { ProductDialog } from "./product-dialog";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -16,6 +17,11 @@ const Card = memo(function Card({ product, big, index, onOpen }: { product: Prod
   const [cover, second] = product.photos;
   const mx = useMotionValue(-200);
   const my = useMotionValue(-200);
+  const packTile = (
+    <div className="ornament absolute inset-0 grid place-items-center" style={{ background: `radial-gradient(circle at 50% 40%, ${cat.grain}, ${cat.color})` }}>
+      <Pack product={product} className="h-[70%] w-auto drop-shadow-2xl transition-transform duration-700 group-hover:scale-105 group-hover:-rotate-3" />
+    </div>
+  );
   const spotlight = useMotionTemplate`radial-gradient(260px circle at ${mx}px ${my}px, rgba(255,236,190,0.28), transparent 70%)`;
 
   return (
@@ -44,17 +50,14 @@ const Card = memo(function Card({ product, big, index, onOpen }: { product: Prod
       >
         {cover ? (
           <>
-            {/* eslint-disable-next-line @next/next/no-img-element -- sources are already resized (Unsplash CDN or webp upload) */}
-            <img src={cover} alt="" loading="lazy" className="absolute inset-0 size-full object-cover transition-transform duration-[1.2s] ease-out group-hover:scale-110" />
+            <Photo src={cover} fallback={packTile} eager={index < 4} className="duration-[1.2s] ease-out group-hover:scale-110" />
             {second && (
-              // eslint-disable-next-line @next/next/no-img-element -- same as above
+              // eslint-disable-next-line @next/next/no-img-element -- hover-only second photo, already resized
               <img src={second} alt="" loading="lazy" className="absolute inset-0 size-full object-cover opacity-0 transition-all duration-700 group-hover:scale-105 group-hover:opacity-100" />
             )}
           </>
         ) : (
-          <div className="ornament absolute inset-0 grid place-items-center" style={{ background: `radial-gradient(circle at 50% 40%, ${cat.grain}, ${cat.color})` }}>
-            <Pack product={product} className="h-[70%] w-auto drop-shadow-2xl transition-transform duration-700 group-hover:scale-105 group-hover:-rotate-3" />
-          </div>
+          packTile
         )}
 
         <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/45 via-35% to-transparent to-70% opacity-90 transition-opacity duration-500 group-hover:opacity-100" />
@@ -176,7 +179,31 @@ export function Products({ products, whatsapp, phone }: { products: Product[]; w
             ))}
           </AnimatePresence>
         </motion.ul>
-        {shown.length === 0 && <p className="py-16 text-center text-muted-foreground">कुछ नहीं मिला · Nothing matches “{query}”.</p>}
+        <AnimatePresence>
+          {shown.length === 0 && (
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="grid justify-items-center gap-3 py-16 text-center">
+              <div className="flex gap-2" aria-hidden>
+                {[0, 1, 2].map((i) => (
+                  <motion.span key={i} animate={{ y: [0, -14, 0] }} transition={{ duration: 0.9, delay: i * 0.15, repeat: Infinity }}>
+                    <Grain className="w-5" />
+                  </motion.span>
+                ))}
+              </div>
+              <p className="font-display text-3xl text-maroon">कुछ नहीं मिला</p>
+              <p className="text-muted-foreground">Nothing matches “{query}”. Try another word, or ask us on WhatsApp.</p>
+              <button
+                type="button"
+                onClick={() => {
+                  setQuery("");
+                  setCat("all");
+                }}
+                className="mt-1 inline-flex min-h-11 items-center rounded-full border-2 border-maroon px-5 font-semibold text-maroon transition hover:bg-maroon hover:text-cream"
+              >
+                Show all products
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
       <ProductDialog product={open} onClose={() => setOpen(null)} whatsapp={whatsapp} phone={phone} />
     </section>

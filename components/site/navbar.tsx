@@ -16,7 +16,13 @@ const LINKS = [
 export function Navbar({ whatsapp }: { whatsapp: string }) {
   const { scrollY, scrollYProgress } = useScroll();
   const [scrolled, setScrolled] = useState(false);
-  useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 24));
+  const [active, setActive] = useState("");
+  useMotionValueEvent(scrollY, "change", (y) => {
+    setScrolled(y > 24);
+    // scroll-spy: the last section whose top has passed the upper third of the screen
+    const current = LINKS.map(([href]) => href).filter((h) => (document.querySelector(h)?.getBoundingClientRect().top ?? Infinity) < innerHeight / 3).pop() ?? "";
+    setActive(current);
+  });
 
   return (
     <motion.header
@@ -37,10 +43,14 @@ export function Navbar({ whatsapp }: { whatsapp: string }) {
         <ul className="hidden items-center gap-1 md:flex">
           {LINKS.map(([href, hi, en]) => (
             <li key={href}>
-              <a href={href} className="group relative flex flex-col items-center px-4 py-2 leading-tight">
+              <a href={href} aria-current={active === href ? "true" : undefined} className="group relative flex flex-col items-center px-4 py-2 leading-tight">
                 <span className="font-display text-lg text-maroon">{hi}</span>
                 <span className="text-[11px] tracking-[0.2em] text-muted-foreground uppercase">{en}</span>
-                <span className="absolute inset-x-4 bottom-0.5 h-0.5 origin-left scale-x-0 rounded bg-gold transition-transform duration-300 group-hover:scale-x-100" />
+                {active === href ? (
+                  <motion.span layoutId="nav-active" className="absolute inset-x-3 bottom-0.5 h-0.5 rounded bg-maroon" transition={{ type: "spring", bounce: 0.25, duration: 0.5 }} />
+                ) : (
+                  <span className="absolute inset-x-4 bottom-0.5 h-0.5 origin-left scale-x-0 rounded bg-gold transition-transform duration-300 group-hover:scale-x-100" />
+                )}
               </a>
             </li>
           ))}

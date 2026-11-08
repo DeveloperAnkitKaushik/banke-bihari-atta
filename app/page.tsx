@@ -1,13 +1,13 @@
-import { WhatsAppIcon } from "@/components/site/art";
 import { Hero } from "@/components/site/hero";
 import { Navbar } from "@/components/site/navbar";
 import { Process } from "@/components/site/process";
 import { Products } from "@/components/site/products";
 import { Stats } from "@/components/site/stats";
 import { VelocityMarquee } from "@/components/site/velocity-marquee";
-import { Footer, Visit } from "@/components/site/visit";
+import { Footer } from "@/components/site/footer";
+import { Visit } from "@/components/site/visit";
+import { WhatsAppFab } from "@/components/site/whatsapp-fab";
 import { getCatalog } from "@/lib/data";
-import { waLink } from "@/lib/wa";
 
 export default async function Home() {
   const { products, settings, year } = await getCatalog();
@@ -22,17 +22,8 @@ export default async function Home() {
         <Process />
         <Visit settings={settings} />
       </main>
-      <Footer year={year} />
-      <a
-        href={waLink(settings.whatsapp, "Namaste! I'd like to know about your products.")}
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Chat on WhatsApp"
-        className="fixed right-4 bottom-4 z-40 grid size-14 place-items-center rounded-full bg-whatsapp text-white shadow-xl shadow-whatsapp/40 transition hover:scale-110 sm:right-6 sm:bottom-6"
-      >
-        <span className="absolute inset-0 animate-ping rounded-full bg-whatsapp/40 motion-reduce:hidden" />
-        <WhatsAppIcon className="relative size-6" />
-      </a>
+      <Footer settings={settings} year={year} />
+      <WhatsAppFab whatsapp={settings.whatsapp} />
     </>
   );
 }
