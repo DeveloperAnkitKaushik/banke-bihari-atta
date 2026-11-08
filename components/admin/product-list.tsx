@@ -1,7 +1,7 @@
 "use client";
 
 import { ArrowDown, ArrowUp, Pencil, Plus, Search, Trash2 } from "lucide-react";
-import { memo, useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { ProductVisual } from "@/components/site/art";
 import {
@@ -89,17 +89,32 @@ export function ProductList() {
   }, []);
   useEffect(reload, [reload]);
 
-  const onMove = useCallback((id: string, dir: -1 | 1) => {
-    setProducts((prev) => {
-      if (!prev) return prev;
+  // latest list for handlers, and a queue so rapid reorders save in click order
+  const latest = useRef<Product[] | null>(null);
+  useEffect(() => {
+    latest.current = products;
+  }, [products]);
+  const saving = useRef<Promise<unknown>>(Promise.resolve());
+
+  const onMove = useCallback(
+    (id: string, dir: -1 | 1) => {
+      const prev = latest.current;
+      if (!prev) return;
       const i = prev.findIndex((p) => p.id === id);
+      if (i < 0 || !prev[i + dir]) return;
       const next = [...prev];
       [next[i], next[i + dir]] = [next[i + dir], next[i]];
       const withOrder = next.map((p, order) => ({ ...p, order }));
-      saveOrder(withOrder.map((p) => p.id)).catch(() => toast.error("Could not save order"));
-      return withOrder;
-    });
-  }, []);
+      latest.current = withOrder;
+      setProducts(withOrder);
+      const ids = withOrder.map((p) => p.id);
+      saving.current = saving.current.then(() => saveOrder(ids)).catch(() => {
+        toast.error("Could not save order");
+        reload();
+      });
+    },
+    [reload],
+  );
 
   const onToggle = useCallback((p: Product, key: "visible" | "featured", v: boolean) => {
     const next = { ...p, [key]: v };
@@ -148,7 +163,7 @@ export function ProductList() {
         <p className="text-sm text-muted-foreground">
           {products.filter((p) => p.visible).length} of {products.length} visible
         </p>
-        <Button size="lg" className="h-11" onClick={() => setEditing(emptyProduct(products.length))}>
+        <Button size="lg" className="h-11" onClick={() => setEditing(emptyProduct(Math.max(-1, ...products.map((p) => p.order)) + 1))}>
           <Plus /> Add product
         </Button>
       </div>

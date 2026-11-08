@@ -189,8 +189,18 @@ export function Products({ products, whatsapp, phone }: { products: Product[]; w
                   </motion.span>
                 ))}
               </div>
-              <p className="font-display text-3xl text-maroon">कुछ नहीं मिला</p>
-              <p className="text-muted-foreground">Nothing matches “{query}”. Try another word, or ask us on WhatsApp.</p>
+              {products.length === 0 ? (
+                <>
+                  <p className="font-display text-3xl text-maroon">जल्द आ रहा है</p>
+                  <p className="text-muted-foreground">Our product list is being updated. Message us on WhatsApp for today&apos;s stock.</p>
+                </>
+              ) : (
+                <>
+                  <p className="font-display text-3xl text-maroon">कुछ नहीं मिला</p>
+                  <p className="text-muted-foreground">Nothing matches “{query}”. Try another word, or ask us on WhatsApp.</p>
+                </>
+              )}
+              {products.length > 0 && (
               <button
                 type="button"
                 onClick={() => {
@@ -201,6 +211,7 @@ export function Products({ products, whatsapp, phone }: { products: Product[]; w
               >
                 Show all products
               </button>
+              )}
             </motion.div>
           )}
         </AnimatePresence>

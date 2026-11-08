@@ -3,7 +3,9 @@ service cloud.firestore {
   match /databases/{database}/documents {
     // Put the owner's login email(s) here. Only these accounts can edit.
     function isAdmin() {
+      // email_verified stops someone signing up with the owner's email via the public auth API
       return request.auth != null
+        && request.auth.token.email_verified == true
         && request.auth.token.email in ['ankitkaushik6269@gmail.com'];
     }
 

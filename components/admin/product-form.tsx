@@ -123,7 +123,11 @@ export function ProductForm({ initial, onClose, onSaved }: { initial: Product; o
                   <label className="grid aspect-square cursor-pointer place-items-center rounded-lg border border-dashed border-gold text-muted-foreground hover:bg-muted">
                     <ImagePlus className="size-5" />
                     <span className="sr-only">Add photos</span>
-                    <input type="file" accept="image/*" multiple className="sr-only" onChange={(e) => onPick(e.target.files)} />
+                    <input type="file" accept="image/*" multiple className="sr-only" onChange={(e) => {
+                        onPick(e.target.files);
+                        e.target.value = ""; // lets the same file be picked again after removing it
+                      }}
+                    />
                   </label>
                 </li>
               )}
