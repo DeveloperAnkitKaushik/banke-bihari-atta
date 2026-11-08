@@ -7,7 +7,7 @@ import { ArrowUp, Clock, MapPin, Phone } from "lucide-react";
 import { useRef } from "react";
 import { CATEGORIES, type Settings } from "@/lib/types";
 import { telLink, waLink } from "@/lib/wa";
-import { Chakki, WhatsAppIcon } from "./art";
+import { Chakki, Mandala, WhatsAppIcon } from "./art";
 
 // deterministic wheat field along the footer's top edge
 const STALKS = Array.from({ length: 48 }, (_, i) => ({ x: i * 2.1 + ((i * 7) % 2), h: 52 + ((i * 13) % 38), d: 3 + ((i * 5) % 4), delay: (i % 7) * 0.3 }));
@@ -59,11 +59,18 @@ export function Footer({ settings, year }: { settings: Settings; year: number })
         <path fill="currentColor" d={`M0 24 ${Array.from({ length: 24 }, (_, i) => `Q${i * 50 + 25} 0 ${(i + 1) * 50} 24`).join(" ")} Z`} />
       </svg>
       <div className="ornament absolute inset-0 opacity-15" />
+      <div aria-hidden className="pointer-events-none absolute inset-0 overflow-hidden">
+        <Mandala className="absolute -bottom-40 -left-40 size-[30rem] text-gold/[0.09]" />
+        <Mandala className="absolute -top-16 -right-24 size-72 text-gold/[0.07]" />
+      </div>
 
-      <div className="relative mx-auto grid max-w-6xl gap-10 px-4 pt-16 pb-10 sm:px-6 md:grid-cols-[1.3fr_1fr_1.2fr]">
+      <div className="relative mx-auto grid max-w-6xl gap-10 px-4 pt-20 pb-10 sm:px-6 md:grid-cols-[1.3fr_1fr_1.2fr]">
         <motion.div initial={{ opacity: 0, y: 24 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ duration: 0.7 }}>
-          <div className="inline-block rounded-3xl bg-cream p-3 shadow-xl shadow-black/20 ring-2 ring-gold/60">
-            <Image src="/logo.webp" alt="Banke Bihari Atta Chakki" width={180} height={120} className="h-24 w-auto" />
+          <div className="relative inline-block">
+            <Mandala className="absolute top-1/2 left-1/2 size-64 -translate-x-1/2 -translate-y-1/2 text-gold/25" />
+            <div className="relative rounded-3xl bg-cream p-3 shadow-xl shadow-black/30 ring-2 ring-gold/60">
+              <Image src="/logo.webp" alt="Banke Bihari Atta Chakki" width={180} height={120} className="h-24 w-auto" />
+            </div>
           </div>
           <p className="mt-5 font-display text-2xl text-gold-soft">घर की रसोई का पूरा भरोसा</p>
           <p className="mt-2 max-w-xs text-sm text-cream/70">Fresh chakki atta, dals and masale from our shop in Khanpur, New Delhi. Ground slow, packed fresh, priced fair.</p>

@@ -1,7 +1,7 @@
 import Image from "next/image";
 import { Clock, MapPin, Navigation, Phone } from "lucide-react";
 import type { Settings } from "@/lib/types";
-import { WhatsAppIcon } from "./art";
+import { Mandala, WhatsAppIcon } from "./art";
 import { telLink, waLink } from "@/lib/wa";
 import { Reveal } from "./reveal";
 
@@ -17,12 +17,7 @@ export function Visit({ settings }: { settings: Settings }) {
       <Reveal className="relative overflow-hidden rounded-[2rem] bg-maroon text-cream shadow-2xl shadow-maroon/30">
         <div className="ornament absolute inset-0 opacity-25" />
         <div className="pointer-events-none absolute inset-3 rounded-[1.6rem] border border-gold/40" />
-        <svg aria-hidden viewBox="0 0 200 200" className="animate-spin-slower pointer-events-none absolute -bottom-24 -left-24 size-80 text-gold/15">
-          {Array.from({ length: 16 }, (_, i) => (
-            <ellipse key={i} cx="100" cy="45" rx="14" ry="42" fill="currentColor" transform={`rotate(${i * 22.5} 100 100)`} />
-          ))}
-          <circle cx="100" cy="100" r="22" fill="currentColor" />
-        </svg>
+        <Mandala className="pointer-events-none absolute -bottom-24 -left-24 size-80 text-gold/15" />
         <div className="relative grid gap-2 md:grid-cols-[1fr_1.1fr]">
           <div className="p-8 sm:p-12">
             <p className="text-sm font-semibold tracking-[0.3em] text-gold-soft uppercase">Visit the chakki</p>

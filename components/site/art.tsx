@@ -40,6 +40,27 @@ export function WheatStalk(props: SVGProps<SVGSVGElement>) {
   );
 }
 
+/** Two-layer mandala: outer petals and inner ring turn in opposite directions (CSS spin utilities). */
+export function Mandala({ className }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 200 200" aria-hidden className={className}>
+      <g className="animate-spin-slower origin-center [transform-box:fill-box]">
+        {Array.from({ length: 16 }, (_, i) => (
+          <ellipse key={i} cx="100" cy="42" rx="13" ry="40" fill="currentColor" opacity=".7" transform={`rotate(${i * 22.5} 100 100)`} />
+        ))}
+      </g>
+      <g className="animate-spin-slow origin-center [transform-box:fill-box]">
+        {Array.from({ length: 12 }, (_, i) => (
+          <path key={i} d="M100 52 q9 14 0 28 q-9 -14 0 -28" fill="currentColor" transform={`rotate(${i * 30} 100 100)`} />
+        ))}
+        <circle cx="100" cy="100" r="36" fill="none" stroke="currentColor" strokeWidth="1.5" strokeDasharray="3 5" />
+      </g>
+      <circle cx="100" cy="100" r="18" fill="currentColor" />
+      <circle cx="100" cy="100" r="9" fill="currentColor" opacity=".5" />
+    </svg>
+  );
+}
+
 /** Top-down stone chakki: grooved upper stone with a wooden handle. */
 export function Chakki(props: SVGProps<SVGSVGElement>) {
   const grooves = Array.from({ length: 12 }, (_, i) => i * 30);
