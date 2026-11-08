@@ -1,6 +1,6 @@
 "use client";
 
-import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { GoogleAuthProvider, getAuth, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import { collection, doc, getDoc, getDocs, setDoc, writeBatch } from "firebase/firestore";
 import { app, db } from "@/lib/firebase";
 import { SEED_PRODUCTS, SEED_SETTINGS } from "@/lib/seed";
@@ -13,6 +13,13 @@ export const watchUser = (cb: (email: string | null) => void) => onAuthStateChan
 export async function login(email: string, password: string) {
   await signInWithEmailAndPassword(auth, email, password);
 }
+
+export async function loginWithGoogle() {
+  await signInWithPopup(auth, new GoogleAuthProvider());
+}
+
+/** Must match the email list in firestore.rules; the rules are the real lock, this only hides the panel. */
+export const ADMIN_EMAILS = ["ankitkaushik6269@gmail.com"];
 
 export const logout = () => signOut(auth);
 
